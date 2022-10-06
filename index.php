@@ -22,8 +22,15 @@ if('encode'== $task){
     if($data != ''){
         $scrambledData = scrambleData($data, $key);
     }
-
 }
+
+if('decode'== $task){
+    $data = $_POST['data'] ?? '';
+    if($data != ''){
+        $scrambledData = decodeData($data, $key);
+    }
+}
+
 
 ?>
 
@@ -52,7 +59,7 @@ if('encode'== $task){
     </div>
     <div class="row justify-content-center mt-5">
         <div class="col-lg-6">
-            <form method="post" action="index.php">
+            <form method="post" action="index.php<?php if('decode' == $task){echo "?task=decode"; } ?>">
                 <div class="mb-3">
                     <label for="key" class="form-label">Key</label>
                     <input type="text" name="key" class="form-control" id="key" <?php displayKey($key); ?>>
