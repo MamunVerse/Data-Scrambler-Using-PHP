@@ -5,12 +5,24 @@ $task = 'encode';
 if(isset($_GET['task']) && $_GET['task']!=''){
     $task = $_GET['task'];
 }
+$key_original = 'abcdefghijklmnopqrstuvwxyz1234567890';
 $key = 'abcdefghijklmnopqrstuvwxyz1234567890';
 
 if('key' == $task){
-    $key_original = str_split($key); // str_split used to make every character a array value;
+    $key_original = str_split($key); // str_split used to make every character a array value
     shuffle($key_original); // shuffle used to randomize array value
     $key = join('', $key_original);
+}else if (isset($_POST['key']) && $_POST['key']!=''){
+    $key = $_POST['key'];
+}
+
+$scrambledData = '';
+if('encode'== $task){
+    $data = $_POST['data'] ?? '';
+    if($data != ''){
+        $scrambledData = scrambleData($data, $key);
+    }
+
 }
 
 ?>
@@ -40,18 +52,18 @@ if('key' == $task){
     </div>
     <div class="row justify-content-center mt-5">
         <div class="col-lg-6">
-            <form>
+            <form method="post" action="index.php">
                 <div class="mb-3">
                     <label for="key" class="form-label">Key</label>
                     <input type="text" name="key" class="form-control" id="key" <?php displayKey($key); ?>>
                 </div>
                 <div class="mb-3">
                     <label for="data" class="form-label">Data</label>
-                    <input type="text" name="data" class="form-control" id="data" >
+                    <textarea id="data" name="data" class="form-control" ><?php if(isset($_POST['data'])){echo $_POST['data']; } ?></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="result" class="form-label">Data</label>
-                    <textarea id="result" class="form-control" ></textarea>
+                    <label for="result" class="form-label">Result</label>
+                    <textarea id="result" class="form-control" ><?php echo $scrambledData; ?></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Do It For Me</button>
             </form>
